@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_timesheet_line_tree_inherit2" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='unit_amount']" position="after">
+                <field name="worked_hours" optional="hide"/>
+                <field name="unit_amount_cost" optional="hide"/>
+                <field name="approved" readonly="1" invisible="1"/>
+                <field name="approved_user_id" readonly="1" optional="hide"/>
+                <field name="approved_date" optional="hide" readonly="1"/>
+                <field name="refused" readonly="1" invisible="1"/>
+                <field name="refused_user_id" readonly="1" optional="hide"/>
+                <field name="refused_date" optional="hide" readonly="1"/>
+
+                <button string="Approve" attrs="{'invisible':[('approved','=',True)]}" name="approve" type="object"
+                        groups="diar_timesheet_approval.group_can_approve_timesheet"
+                        class="btn btn-primary"/>
+                <button string="Refuse" attrs="{'invisible':[('refused','=',True)]}" name="refuse" type="object"
+                        groups="diar_timesheet_approval.group_can_refuse_timesheet"
+                        class="btn btn-primary"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='unit_amount']" position="attributes">
+                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>
+            </xpath>
+            <!--            <xpath expr="//field[@name='so_line']" position="attributes">-->
+            <!--                <attribute name="attrs">{'readonly': [('approved','=',True)]}</attribute>-->
+            <!--            </xpath>-->
+        </field>
+    </record>
+    <record id="timesheet_view_search_approval" model="ir.ui.view">
+        <field name="name">account.analytic.line.search</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="arch" type="xml">
+            <filter name="mine" position="after">
+                <filter name="approve" string="Approved" domain="[('approved', '=', True)]"/>
+                <filter string="Approved By" name="approve_user" domain="[]" context="{'group_by': 'approved_user_id'}"/>
+                <filter string="Approval" name="approve_group" domain="[]" context="{'group_by': 'approved'}"/>
+                <filter name="refuse" string="Refused" domain="[('refused', '=', True)]"/>
+                <filter string="Refused By" name="refuse_user" domain="[]" context="{'group_by': 'refused_user_id'}"/>
+                <filter string="Refuse" name="refuse_group" domain="[]" context="{'group_by': 'refused'}"/>
+            </filter>
+
+        </field>
+    </record>
+
+
+</odoo>

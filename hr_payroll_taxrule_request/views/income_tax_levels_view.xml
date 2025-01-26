@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--tax_income_levels Tree view-->
+    <record id="tax_income_levels_tree_view" model="ir.ui.view">
+        <field name="name">tax.income.levels.tree</field>
+        <field name="model">tax.income.levels</field>
+        <field name="arch" type="xml">
+            <tree string="Tax Income Levels">
+                <field name="sequence" widget="handle"/>
+                <field name="last_level"/>
+                <field name="level_min"/>
+                <field name="level_max"/>
+                <field name="level_percentage"/>
+                <field name="Level_description" />
+            </tree>
+        </field>
+    </record>
+
+    <!--tax_income_levels Form view-->
+    <record id="tax_income_levels_form_view" model="ir.ui.view">
+        <field name="name">tax.income.levels.form</field>
+        <field name="model">tax.income.levels</field>
+        <field name="arch" type="xml">
+            <form string="Tax Income Levels">
+                <sheet>
+                    <group string="Level Information">
+                        <group>
+                            <field name="sequence" invisible="1"/>
+                            <field name="last_level"/>
+                            <field name="level_min" required="1"/>
+                            <field name="level_max" attrs="{'invisible':[('last_level','=',True)],'required':[('last_level','=',False)]}"  />
+                            <field name="level_percentage" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                        <field name="Level_description" placeholder="Level Description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--tax_income_levels search view-->
+    <record id="tax_income_levels_search_form" model="ir.ui.view">
+        <field name="name">tax.income.levels.search.form</field>
+        <field name="model">tax.income.levels</field>
+        <field name="arch" type="xml">
+            <search string="Tax Income Levels">
+                <field name="sequence"/>
+                <field name="level_min"/>
+                <field name="level_max"/>
+                <field name="level_percentage"/>
+                <field name="Level_description"/>
+            </search>
+        </field>
+    </record>
+    <!-- Shortcuts -->
+    <record id="act_tax_income_levels_search_form" model="ir.actions.act_window">
+        <field name="name">Tax Income Levels</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tax.income.levels</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="tax_income_levels_tree_view"/>
+    </record>
+
+    <menuitem
+            id="menu_act_tax_income_levels"
+            action="act_tax_income_levels_search_form"
+            sequence="80"
+            parent="hr_payroll_community.menu_hr_payroll_community_configuration"/>
+</odoo>

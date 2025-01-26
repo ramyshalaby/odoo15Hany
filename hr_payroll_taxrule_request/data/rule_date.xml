@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="employee_deduction_rule_incometax" model="hr.salary.rule">
+            <field name="name">Employee Deduction Income Tax</field>
+            <field name="sequence" eval="100"/>
+            <field name="code">DeductionRUlEIncomeTax</field>
+            <field name="category_id" ref="hr_payroll_community.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee.calculate_egypt_icome_tax(contract.wage)
+            </field>
+            <field name="sequence" eval="180"/>
+            <field name="note">Confirmed Deduction Egypt Income Tax
+            </field>
+        </record>
+    </data>
+</odoo>

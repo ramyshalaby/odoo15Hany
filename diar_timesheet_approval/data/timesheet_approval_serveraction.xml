@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+      <record id="model_timesheet_approval" model="ir.actions.server">
+        <field name="name">Approve</field>
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="binding_model_id" ref="model_account_analytic_line"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.approve()</field>
+    </record>
+     <record id="model_timesheet_refuse" model="ir.actions.server">
+        <field name="name">Refuse</field>
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="binding_model_id" ref="model_account_analytic_line"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.refuse()</field>
+    </record>
+</odoo>

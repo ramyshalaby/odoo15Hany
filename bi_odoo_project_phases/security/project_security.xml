@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+<!--        <record model="res.groups" id="see_my_projects">-->
+<!--            <field name="name">See My Projects(Project Managers)</field>-->
+<!--        </record>-->
+
+<!--        <record id="project_project_see_my_projects" model="ir.rule">-->
+<!--            <field name="name">See My Projects (Project Managers)</field>-->
+<!--            <field ref="project.model_project_project" name="model_id"/>-->
+<!--            <field eval="True" name="global"/>-->
+<!--            <field name="domain_force">[('user_id','=',user.id)]</field>-->
+<!--            <field name="groups" eval="[(4, ref('bi_odoo_project_phases.see_my_projects'))]"/>-->
+<!--        </record>-->
+
+        <record model="ir.rule" id="project_user_see_my_projects">
+            <field name="name">Project: employees: following required for follower-only projects</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

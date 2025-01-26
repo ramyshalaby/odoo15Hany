@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_hr_payslip_inherit_form" model="ir.ui.view">
+        <field name="name">view.hr.payslip.inherit.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll_community.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='struct_id']" position="after">
+                <field name="payment_method"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_paymenttype" model="ir.ui.view">
+        <field name="name">view.employee.form.paymenttype</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="payment_method"/>
+            </xpath>
+            <group name="payroll_group" position="after">
+                <group string="Bank Info" name="bank_info">
+                    <field name="bank_account_id2"/>
+                    <field name="bank_account_number"/>
+                    <field name="bank_account_iban_number"/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

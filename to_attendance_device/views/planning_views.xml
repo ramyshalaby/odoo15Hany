@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  	<data>
+      	<record model="ir.ui.view" id="planning_slot_view_form">
+		    <field name="name">planning.slot.form</field>
+		    <field name="model">planning.slot</field>
+		    <field name="inherit_id" ref="planning.planning_view_form"/>
+		    <field name="arch" type="xml">
+		    	<field name="end_datetime" position="after">
+					<field name="device_start_date"/>
+					<field name="device_end_date"/>
+				</field>
+
+		   </field>
+		</record>
+		
+  	</data>
+</odoo>

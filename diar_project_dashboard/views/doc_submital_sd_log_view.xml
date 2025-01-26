@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Document Submittal SD Log kanban view-->
+    <record id="document_submittal_sd_log_kanban_view" model="ir.ui.view">
+        <field name="name">document.submittal.sd.log.kanban</field>
+        <field name="model">document.submittal.sd.log</field>
+        <field name="arch" type="xml">
+            <kanban sample="1">
+                <field name="id"/>
+                <field name="project_id"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="project_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                 <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="partner_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="contract_type_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <t t-if="record.project_code.value">[<field name="project_code"/>]
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <div name="project_start_date" class="mt-1">
+                                            From:
+                                            <field name="project_start_date"/>
+                                            TO :
+                                            <field name="project_end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!--Document Submittal SD Log Tree view-->
+    <record id="document_submittal_sd_log_tree_view" model="ir.ui.view">
+        <field name="name">document.submittal.sd.log.tree</field>
+        <field name="model">document.submittal.sd.log</field>
+        <field name="arch" type="xml">
+            <tree string="Document Submittal SD Log">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="contract_type_id"/>
+                <field name="project_start_date"/>
+                <field name="project_end_date"/>
+                <field name="project_code"/>
+                <field name="diar_scope"/>
+                <field name="contractor_res_partner_id"/>
+                <field name="consultant_res_partner_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+                <field name="last_update"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Document Submittal SD Log Form view-->
+    <record id="document_submittal_sd_log_form_view" model="ir.ui.view">
+        <field name="name">document.submittal.sd.log.form</field>
+        <field name="model">document.submittal.sd.log</field>
+        <field name="arch" type="xml">
+            <form string="Document Submittal SD Log">
+                <header>
+
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Project Information">
+                            <field name="project_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="partner_id"/>
+                            <field name="contract_type_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <label for="project_start_date" string="Dates"
+                                   groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"/>
+                            <div name="dates" class="o_row"
+                                 groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager">
+                                <field name="project_start_date" widget="daterange"
+                                       placeholder="From ..." attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                       options="{&quot;related_end_date&quot;: &quot;project_end_date&quot;}"/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"
+                                   title="Arrow"/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon"
+                                   title="Arrow"
+                                   attrs="{'invisible': [('project_start_date', '=', False), ('project_end_date', '=', False)]}"/>
+                                <field name="project_end_date" widget="daterange"
+                                       placeholder="To ..." attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                       groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"
+                                       options="{&quot;related_start_date&quot;: &quot;project_start_date&quot;}"/>
+                            </div>
+                            <field name="project_code" attrs="{'readonly':[('is_top_manager','=',False)]}"/>
+                            <field name="diar_scope" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"/>
+                            <field name="contractor_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="consultant_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="create_uid" readonly="1" force_save="1"/>
+                            <field name="create_date" readonly="1" force_save="1"/>
+                            <field name="last_update" readonly="1" force_save="1"/>
+                            <field name="is_top_manager" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="document_submittal_sd_log_details_ids" nolabel="1">
+                                <tree>
+                                    <field name="reference" required="1"/>
+                                    <field name="review" required="1"/>
+                                    <field name="from_res_partner_id" required="1"/>
+                                    <field name="to_res_partner_id" required="1"/>
+                                    <field name="drawing_number" required="1"/>
+                                    <field name="drawing_rev" required="1"/>
+                                    <field name="discipline_section_id" required="1"/>
+                                    <field name="item_name" required="1"/>
+                                    <field name="Level" required="1"/>
+                                    <field name="drawing_title" required="1"/>
+
+                                    <field name="copy_type" required="1" optional="hide"/>
+                                    <field name="sentdate" required="1" optional="hide"/>
+                                    <field name="duedate" required="1" optional="hide"/>
+                                    <field name="receiveddate" required="1" optional="hide"/>
+                                    <field name="replyduration" required="1" optional="hide"/>
+                                    <field name="action_code" required="1" optional="hide"/>
+                                    <field name="submittedfor" required="1" optional="hide"/>
+                                    <field name="dos" required="1" optional="hide"/>
+                                    <field name="dosStatus" required="1" optional="hide"/>
+                                    <field name="res_country_id" required="1" optional="hide"/>
+                                    <field name="packageType" required="1" optional="hide"/>
+                                    <field name="scope" required="1" optional="hide"/>
+                                    <field name="notes" optional="hide"/>
+                                </tree>
+                                <form>
+                                    <group col="4">
+                                        <field name="reference" required="1"/>
+                                        <field name="review" required="1"/>
+                                        <field name="from_res_partner_id" required="1"/>
+                                        <field name="to_res_partner_id" required="1"/>
+                                        <field name="drawing_number" required="1"/>
+                                        <field name="drawing_rev" required="1"/>
+                                        <field name="discipline_section_id" required="1"/>
+                                        <field name="item_name" required="1"/>
+                                        <field name="Level" required="1"/>
+                                        <field name="drawing_title" required="1"/>
+                                        <field name="copy_type" required="1"/>
+                                        <field name="action_code"
+                                               groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"/>
+                                        <label for="sentdate" string="Send to Receive Date"/>
+                                        <div name="sentdate" class="o_row">
+                                            <field name="sentdate" widget="daterange" required="1"
+                                                   placeholder="Sent Date ..."
+                                                   options="{&quot;related_end_date&quot;: &quot;receiveddate&quot;}"/>
+                                            <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"
+                                               title="Arrow"/>
+                                            <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon"
+                                               title="Arrow"
+                                               attrs="{'invisible': [('sentdate', '=', False), ('receiveddate', '=', False)]}"/>
+                                            <field name="receiveddate" widget="daterange" readonly="1"
+                                                   placeholder="Receive Date ..." force_save="1"
+                                                   options="{&quot;related_start_date&quot;: &quot;sentdate&quot;}"/>
+                                        </div>
+                                        <field name="duedate" required="1"/>
+                                        <field name="replyduration"/>
+                                        <field name="submittedfor" readonly="1" force_save="1"/>
+                                        <field name="dos" required="1"/>
+                                        <field name="dosStatus" readonly="1" force_save="1"/>
+                                        <field name="native_file" required="1"/>
+                                        <field name="native_file_name" filename="native_file" invisible="1"/>
+                                        <field name="scan_file"/>
+                                        <field name="scan_file_name" filename="scan_file" invisible="1"/>
+                                        <field name="res_country_id" required="1"/>
+                                        <field name="packageType" required="1"/>
+                                        <field name="scope" required="1"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Totals">
+                            <group>
+                                <group>
+                                    <field name="h_co_action_code"/>
+                                    <field name="a_co_action_code"/>
+                                    <field name="b_co_action_code"/>
+                                    <field name="c_co_action_code"/>
+                                    <field name="d_co_action_code"/>
+                                    <field name="cancel_co_action_code"/>
+                                    <field name="revision_co_action_code"/>
+                                </group>
+                                <group>
+                                    <field name="latest_dos"/>
+                                    <field name="superseded_dos"/>
+                                    <field name="opened_dosStatus"/>
+                                    <field name="closed_dosStatus"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--Document Submittal SD Log search view-->
+    <record id="document_submittal_sd_log_request_search_form" model="ir.ui.view">
+        <field name="name">document.submittal.sd.log.search.form</field>
+        <field name="model">document.submittal.sd.log</field>
+        <field name="arch" type="xml">
+            <search string="Document Submittal SD Log">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="partner_id"/>
+                <field name="project_start_date"/>
+                <field name="project_end_date"/>
+                <field name="project_code"/>
+                <field name="diar_scope"/>
+                <field name="contractor_res_partner_id"/>
+                <field name="consultant_res_partner_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+                <field name="last_update"/>
+            </search>
+        </field>
+    </record>
+    <!-- Shortcuts -->
+    <record id="act_document_submittal_sd_log" model="ir.actions.act_window">
+        <field name="name">Doc Submittal SD Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.submittal.sd.log</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" eval="document_submittal_sd_log_tree_view"/>
+    </record>
+<!--    <menuitem-->
+<!--            id="menu_act_document_submittal_sd_log"-->
+<!--            action="act_document_submittal_sd_log"-->
+<!--            name="Document Submittal SD Log"-->
+<!--            sequence="2"-->
+<!--            parent="menu_project_dashboard_date"/>-->
+
+
+    <!--    <record id="document_submittal_log_details_form_view" model="ir.ui.view">-->
+    <!--        <field name="name">document.submittal.log.details.form</field>-->
+    <!--        <field name="model">document.submittal.log.details</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <form string="Document Submittal Log Details">-->
+    <!--                <form>-->
+    <!--                    <group col="4">-->
+    <!--                        <field name="reference" required="1"/>-->
+    <!--                        <field name="review" required="1"/>-->
+    <!--                        <label for="start_date" string="Dates"-->
+    <!--                               groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"/>-->
+    <!--                        <div name="dates" class="o_row"-->
+    <!--                             groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager">-->
+    <!--                            <field name="start_date" widget="daterange" required="1"-->
+    <!--                                   options="{&quot;related_end_date&quot;: &quot;end_date&quot;}"/>-->
+    <!--                            <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"-->
+    <!--                               title="Arrow"/>-->
+    <!--                            <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon"-->
+    <!--                               title="Arrow"-->
+    <!--                               attrs="{'invisible': [('start_date', '=', False), ('end_date', '=', False)]}"/>-->
+    <!--                            <field name="end_date" widget="daterange" required="1"-->
+    <!--                                   options="{&quot;related_start_date&quot;: &quot;start_date&quot;}"/>-->
+    <!--                        </div>-->
+    <!--                        <field name="discipline_section_id" required="1"/>-->
+    <!--                        <field name="submittal_Type" required="1"/>-->
+    <!--                        <field name="name" required="1"/>-->
+    <!--                        <field name="attachment" required="1"/>-->
+    <!--                        <field name="attachment_name" filename="attachment" invisible="1"/>-->
+    <!--                        <field name="copy_type" required="1"/>-->
+    <!--                        <field name="sentdate" required="1"/>-->
+    <!--                        <field name="duedate" required="1"/>-->
+    <!--                        <field name="receiveddate" required="1"/>-->
+    <!--                        <field name="action_code" required="1"/>-->
+    <!--                        <field name="replyduration"/>-->
+    <!--                        <field name="submittedfor" readonly="1"/>-->
+    <!--                        <field name="dos" required="1"/>-->
+    <!--                        <field name="dosStatus" readonly="1"/>-->
+    <!--                        <field name="native_file" required="1"/>-->
+    <!--                        <field name="native_file_name" filename="native_file" invisible="1"/>-->
+    <!--                        <field name="scan_file" required="1"/>-->
+    <!--                        <field name="scan_file_name" filename="scan_file" invisible="1"/>-->
+    <!--                        <field name="res_country_id" required="1"/>-->
+    <!--                        <field name="packageType" required="1"/>-->
+    <!--                        <field name="scope" required="1"/>-->
+    <!--                        <field name="notes" required="1"/>-->
+    <!--                    </group>-->
+    <!--                </form>-->
+    <!--            </form>-->
+    <!--        </field>-->
+    <!--    </record>-->
+    <!--    <record id="document_submittal_log_details_tree_view" model="ir.ui.view">-->
+    <!--        <field name="name">document.submittal.log.details.tree</field>-->
+    <!--        <field name="model">document.submittal.log.details</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <tree string="Document Submittal Log Details">-->
+    <!--                <field name="reference" required="1"/>-->
+    <!--                <field name="review" required="1"/>-->
+    <!--                <field name="start_date" required="1"/>-->
+    <!--                <field name="end_date" required="1"/>-->
+    <!--                <field name="discipline_section_id" required="1"/>-->
+    <!--                <field name="submittal_Type" required="1" optional="hide"/>-->
+    <!--                <field name="name" required="1" optional="hide"/>-->
+    <!--                <field name="attachment" required="1" optional="hide"/>-->
+    <!--                <field name="attachment_name" required="1" optional="hide"/>-->
+    <!--                <field name="copy_type" required="1" optional="hide"/>-->
+    <!--                <field name="sentdate" required="1" optional="hide"/>-->
+    <!--                <field name="duedate" required="1" optional="hide"/>-->
+    <!--                <field name="receiveddate" required="1" optional="hide"/>-->
+    <!--                <field name="replyduration" required="1" optional="hide"/>-->
+    <!--                <field name="action_code" required="1" optional="hide"/>-->
+    <!--                <field name="submittedfor" required="1" optional="hide"/>-->
+    <!--                <field name="dos" required="1" optional="hide"/>-->
+    <!--                <field name="dosStatus" required="1" optional="hide"/>-->
+    <!--                <field name="native_file" required="1" optional="hide"/>-->
+    <!--                <field name="native_file_name" required="1" optional="hide"/>-->
+    <!--                <field name="scan_file" required="1" optional="hide"/>-->
+    <!--                <field name="scan_file_name" required="1" optional="hide"/>-->
+    <!--                <field name="res_country_id" required="1" optional="hide"/>-->
+    <!--                <field name="packageType" required="1" optional="hide"/>-->
+    <!--                <field name="scope" required="1" optional="hide"/>-->
+    <!--                <field name="notes" required="1" optional="hide"/>-->
+    <!--            </tree>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <!--    <record id="document_submittal_log_details_pivot_view" model="ir.ui.view">-->
+    <!--        <field name="name">document.submittal.log.details.tree</field>-->
+    <!--        <field name="model">document.submittal.log.details</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <pivot string="Document Submittal Log Details">-->
+    <!--                <field name="name" type="row"/>-->
+    <!--                <field name="start_date" interval="month" type="col"/>-->
+    <!--            </pivot>-->
+    <!--        </field>-->
+    <!--    </record>-->
+    <!--    <record id="act_document_submittal_log_details" model="ir.actions.act_window">-->
+    <!--        <field name="name">Doc Submittal Log Details</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">document.submittal.log.details</field>-->
+    <!--        <field name="view_mode">tree,form</field>-->
+    <!--        <field name="view_id" eval="document_submittal_log_tree_view"/>-->
+    <!--    </record>-->
+
+    <!--    <menuitem id="menu_project_dashboard_data_report"-->
+    <!--              name="Reports"-->
+    <!--              parent="menu_project_dashboard_date" sequence="100"-->
+    <!--              groups="group_project_dashboard_doc_submittal_log_manager"/>-->
+    <!--    <menuitem-->
+    <!--            id="menu_act_document_submittal_log_details"-->
+    <!--            action="act_document_submittal_log_details"-->
+    <!--            name="Document Submittal Log"-->
+    <!--            sequence="1"-->
+    <!--            parent="menu_project_dashboard_data_report"/>-->
+</odoo>

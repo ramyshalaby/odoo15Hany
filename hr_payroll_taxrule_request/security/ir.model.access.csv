@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tax_income_levels,tax_income_levels,model_tax_income_levels,,1,1,1,1
+
+

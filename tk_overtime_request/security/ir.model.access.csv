@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_overtime_calculator_user,account.overtime.calculator,model_overtime_calculator,tk_overtime_request.group_overtime_request_user,1,1,1,0
+access_overtime_calculator_manager,account.overtime.calculator,model_overtime_calculator,tk_overtime_request.group_overtime_request_manager,1,1,1,1
+access_overtime_rate_user,account.overtime.rate,model_overtime_rate,tk_overtime_request.group_overtime_request_user,1,1,1,0
+access_overtime_rate_manager,account.overtime.rate,model_overtime_rate,tk_overtime_request.group_overtime_request_user,1,1,1,1

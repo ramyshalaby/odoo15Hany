@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_deliverables_all,project_discipline.project_deliverables,model_project_deliverables,base.group_user,1,1,1,1
+access_project_deliverables_type_all,project_discipline.project_deliverables_type,model_project_deliverables_type,base.group_user,1,1,1,1
+access_project_engineering_phase_all,project_discipline.project_engineering_phase,model_project_engineering_phase,base.group_user,1,1,1,1
+access_resource_value_all,project_discipline.resource_value,model_resource_value,base.group_user,1,1,1,1
+access_project_estimation_sale_manager,project_discipline.project_estimation_sale_manager,model_project_estimation,sales_team.group_sale_manager,1,1,1,1
+access_project_estimation_all,project_discipline.project_estimation,model_project_estimation,base.group_user,1,1,0,0
+access_project_estimation_line_all,project_discipline.project_estimation_line,model_project_estimation_line,base.group_user,1,1,1,1
+access_project_type_all,project_discipline.project_type,model_project_type,base.group_user,1,1,1,1

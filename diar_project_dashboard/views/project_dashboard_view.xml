@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="simple_project_dashboard_form_view" model="ir.ui.view">
+        <field name="name">document.submittal.log.form</field>
+        <field name="model">document.submittal.log</field>
+        <field name="arch" type="xml">
+            <form string="Contractual Data" edit="0" create="0" delete="0">
+                <group>
+                    <field name="project_id"/>
+                    <field name="contract_type_id"/>
+                    <field name="partner_id"/>
+                    <field name="NumberofHospitalBeds"/>
+                    <field name="NumberofFloors"/>
+                    <field name="TotalProjectArea_m2"/>
+                    <field name="Project_Budget"/>
+                    <field name="Advance_Payment"/>
+                    <field name="Retention"/>
+                    <field name="Commencement_Date"/>
+                    <field name="Project_Duration"/>
+                    <field name="main_consultant_res_partner_id"/>
+                    <field name="main_contractor_res_partner_id"/>
+                    <field name="consultant_res_partner_id"/>
+                    <field name="contractor_res_partner_id"/>
+                    <field name="consultant_res_partner_id"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_simple_project_dashboard_form_view" model="ir.actions.act_window">
+        <field name="name">Contractual Data</field>
+        <field name="res_model">document.submittal.log</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="diar_project_dashboard.simple_project_dashboard_form_view"/>
+    </record>
+
+    <record id="simple_project_dashboard_pie_view" model="ir.ui.view">
+        <field name="name">Project Duration</field>
+        <field name="model">document.submittal.log</field>
+        <field name="arch" type="xml">
+            <graph string="Project Duration" type="pie" sample="1">
+                <field name="elapsed_time" type="measure" string="Elapsed Time"/>
+                <field name="remaining_time" type="measure" string="Remaining Time"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_simple_project_dashboard_pie_view" model="ir.actions.act_window">
+        <field name="name">Contractual Data</field>
+        <field name="res_model">document.submittal.log</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="diar_project_dashboard.simple_project_dashboard_pie_view"/>
+    </record>
+
+    <record model="ir.ui.view" id="simple_project_dashboard_view">
+        <field name="name">Simple Dashboard</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="My Dashboard" editable="0" create="0" delete="0">
+                <board style="1-1">
+                    <column>
+                        <action name="%(diar_project_dashboard.action_simple_project_dashboard_form_view)d"
+                                string="Project Data"/>
+                    </column>
+                    <column>
+                        <action name="%(diar_project_dashboard.action_simple_project_dashboard_pie_view)d"
+                                string="Project Data"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="open_simple_project_dashboard_action">
+        <field name="name">Project Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_mode">form</field>
+        <field name="usage">menu</field>
+        <field name="view_id" ref="simple_project_dashboard_view"/>
+    </record>
+
+    <menuitem
+            id="menu_open_simple_project_dashboard_action"
+            action="open_simple_project_dashboard_action"
+            name="test dashboard"
+            sequence="2"
+            parent="menu_project_dashboard_data_configuration"/>
+</odoo>

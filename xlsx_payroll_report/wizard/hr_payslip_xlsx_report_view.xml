@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payslip_mass_bulk_xlsx_report" model="ir.ui.view">
+        <field name="name">Xlsx Bulk Payslip</field>
+        <field name="model">hr.payslip.xlsx.report</field>
+        <field name="arch" type="xml">
+            <form string="XlSX Bulk Payslip">
+                <field name="hr_payslip_ids" readonly="1" force_save="1"/>
+                <p class="oe_grey">
+                    Do you want to Export these Payslips?.
+                </p>
+                <footer>
+                    <button name="print_payslip_elsx"
+                            string="Export Payslip" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="act_bulk_xlsx_payslip" model="ir.actions.act_window">
+        <field name="name">Export Bulk Payslip</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.payslip.xlsx.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="hr_payroll_community.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <record id="server_act_bulk_xlsx_payslip" model="ir.actions.server">
+        <field name="name">Export Bulk Payslip</field>
+        <field name="model_id" ref="hr_payroll_community.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll_community.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = record.action_bulk_xlsx_payslip_report()</field>
+    </record>
+</odoo>

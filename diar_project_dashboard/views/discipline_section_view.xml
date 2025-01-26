@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Loan Tree view-->
+    <record id="discipline_section_tree_view" model="ir.ui.view">
+        <field name="name">discipline.section.tree</field>
+        <field name="model">discipline.section</field>
+        <field name="arch" type="xml">
+            <tree string="Discipline Section">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Loan Form view-->
+    <record id="discipline_section_form_view" model="ir.ui.view">
+        <field name="name">discipline.section.form</field>
+        <field name="model">discipline.section</field>
+        <field name="arch" type="xml">
+            <form string="Discipline Section">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="code" required="1"/>
+                        <field name="discipline_section_id" />
+                    </group>
+                    <field name="description" placeholder="Description ........."/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--loan search view-->
+    <record id="discipline_section_request_search_form" model="ir.ui.view">
+        <field name="name">discipline.section.search.form</field>
+        <field name="model">discipline.section</field>
+        <field name="arch" type="xml">
+            <search string="Discipline Section">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+    <!-- Shortcuts -->
+    <record id="act_discipline_section" model="ir.actions.act_window">
+        <field name="name">Discipline Section</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">discipline.section</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="discipline_section_tree_view"/>
+    </record>
+    <menuitem id="menu_project_dashboard_data_configuration"
+              name="Configuration"
+              parent="menu_project_dashboard_date" sequence="100" groups="group_project_dashboard_doc_submittal_log_manager"/>
+    <menuitem
+            id="menu_act_discipline_section"
+            action="act_discipline_section"
+            name="Discipline Section"
+            sequence="1"
+            parent="menu_project_dashboard_data_configuration"/>
+</odoo>

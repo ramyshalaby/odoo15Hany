@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="diar_paperformat_attendance_sheet" model="report.paperformat">
+            <field name="name">attendance sheet1</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+        <template id="report_attendancesheet_document">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <div class="page">
+                    <h2 class="text-center">
+                        <span t-if="o.name">
+                            <p class="m-0" t-field="o.name"/>
+                            <span t-if="o.state == 'draft'">Draft</span>
+                            <span t-if="o.state == 'confirm'">Confirmed</span>
+                            <span t-if="o.state == 'done'">Approved</span>
+                        </span>
+                    </h2>
+                    <div id="informations" class="row mt32 mb32">
+                        <div class="col-auto col-3 mw-100 mb-2" t-if="o.date_from" name="invoice_date">
+                            <strong>From:</strong>
+                            <p class="m-0" t-field="o.date_from"/>
+                        </div>
+                        <div class="col-auto col-3 mw-100 mb-2" t-if="o.date_to" name="date_to">
+                            <strong>To:</strong>
+                            <p class="m-0" t-field="o.date_to"/>
+                        </div>
+                        <div class="col-auto col-3 mw-100 mb-2" t-if="o.department_id" name="department">
+                            <strong>Department:</strong>
+                            <p class="m-0" t-field="o.department_id.name"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm o_main_table" name="invoice_line_table">
+                        <thead>
+                            <tr/>
+                            <tr>
+                                <th name="th_description" class="text-left"><span>Date</span></th>
+                                <th name="dayofweek" class="text-left"><span>Day OF Week</span></th>
+                                <th name="plannedin" class="text-left"><span>Planned IN</span></th>
+                                <th name="plannedout" class="text-left"><span>Planned OUT</span></th>
+                                <th name="actualin" class="text-left"><span>Actual IN</span></th>
+                                <th name="actualout" class="text-left"><span>Actual OUT</span></th>
+                                <th name="workedhours" class="text-left"><span>Worked Hours</span></th>
+                                <th name="actuallatein" class="text-left"><span>Actual Late IN</span></th>
+                                <th name="latein" class="text-left"><span>Late IN</span></th>
+                                <th name="actualOvertime" class="text-left"><span>Actual Overtime</span></th>
+                                <th name="overtime" class="text-left"><span>Overtime</span></th>
+                                <th name="actualdifftime" class="text-left"><span>Actual Diff Time</span></th>
+                                <th name="difftime" class="text-left"><span>Diff Time</span></th>
+                                <th name="status" class="text-left"><span>Status</span></th>
+                                <th name="note" class="text-left"><span>Note</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="total_worked_hours" t-value="0" />
+                            <t t-set="total_act_late_in" t-value="0" />
+                            <t t-set="total_late_in" t-value="0" />
+                            <t t-set="total_act_overtime" t-value="0" />
+                            <t t-set="total_overtime" t-value="0" />
+                            <t t-set="total_act_diff_time" t-value="0" />
+                            <t t-set="total_diff_time" t-value="0" />
+                            <t t-foreach="o.att_sheet_line_ids" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section'">
+                                    <td class="text-left"><span t-field="line.date"/></td>
+                                    <td class="text-left">
+                                        <span t-if="line.day == '0'">Monday</span>
+                                        <span t-if="line.day == '1'">Tuesday</span>
+                                        <span t-if="line.day == '2'">Wednesday</span>
+                                        <span t-if="line.day == '3'">Thursday</span>
+                                        <span t-if="line.day == '4'">Friday</span>
+                                        <span t-if="line.day == '5'">Saturday</span>
+                                        <span t-if="line.day == '6'">Sunday</span>
+                                    </td>
+                                    <td class="text-left"><span t-esc="round(line.pl_sign_in,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.pl_sign_out,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.ac_sign_in,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.ac_sign_out,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.worked_hours,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.act_late_in,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.late_in,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.act_overtime,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.overtime,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.act_diff_time,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <td class="text-left"><span t-esc="round(line.diff_time,2)" t-options="{'widget': 'float_time'}"/></td>
+                                    <t t-set="total_worked_hours" t-value="total_worked_hours+line.worked_hours" />
+                                    <t t-set="total_act_late_in" t-value="total_act_late_in+line.act_late_in" />
+                                    <t t-set="total_late_in" t-value="total_late_in+line.late_in" />
+                                    <t t-set="total_act_overtime" t-value="total_act_overtime+line.act_overtime" />
+                                    <t t-set="total_overtime" t-value="total_overtime+line.overtime" />
+                                    <t t-set="total_act_diff_time" t-value="total_act_diff_time+line.act_diff_time" />
+                                    <t t-set="total_diff_time" t-value="total_diff_time+line.diff_time" />
+                                    <td class="text-left">
+                                        <span t-if="line.status == 'ab'">Absence</span>
+                                        <span t-if="line.status == 'weekend'">Week End</span>
+                                        <span t-if="line.status == 'ph'">Public Holiday</span>
+                                        <span t-if="line.status == 'leave'">Leave</span>
+                                    </td>
+                                    <td class="text-left"><span t-field="line.note"/></td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td/><td/><td/><td/><td/><td/>
+                                <td>
+                                    <t t-esc="round(total_worked_hours,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="round(total_act_late_in,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="round(total_late_in,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="round(total_act_overtime,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                 <td>
+                                    <t t-esc="round(total_overtime,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                 <td>
+                                    <t t-esc="round(total_act_diff_time,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                                 <td>
+                                    <t t-esc="round(total_diff_time,2)" t-options="{'widget': 'float_time'}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </template>
+        <template id="report_attendance_timesheet">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.employee_id.lang"/>
+                    <t t-call="diar_timesheet_approval.report_attendancesheet_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- QWeb Reports -->
+        <record id="attendance_timesheet_report_action" model="ir.actions.report">
+            <field name="name">Attendance Timesheet</field>
+            <field name="model">attendance.sheet</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">diar_timesheet_approval.report_attendance_timesheet</field>
+            <field name="report_file">diar_timesheet_approval.report_attendance_timesheet</field>
+            <field name="print_report_name">('Attendance Sheet Details - %s' % (object.employee_id.name))</field>
+            <field name="binding_model_id" ref="hr_attendance_sheet.model_attendance_sheet"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="diar_timesheet_approval.diar_paperformat_attendance_sheet"/>
+<!--            <field name="groups_id" eval="[(4, ref('account.group_account_invoice')),-->
+<!-- (4, ref('account.group_account_readonly'))]"/>-->
+        </record>
+
+    </data>
+</odoo>

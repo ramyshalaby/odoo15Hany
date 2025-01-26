@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Loan Tree view-->
+    <record id="contract_type_tree_view" model="ir.ui.view">
+        <field name="name">contract.type.tree</field>
+        <field name="model">contract.type</field>
+        <field name="arch" type="xml">
+            <tree string="Contract Type">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Loan Form view-->
+    <record id="contract_type_form_view" model="ir.ui.view">
+        <field name="name">contract.type.form</field>
+        <field name="model">contract.type</field>
+        <field name="arch" type="xml">
+            <form string="Contract Type">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="code" required="1"/>
+                    </group>
+                    <field name="description" placeholder="Description ........."/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--loan search view-->
+    <record id="contract_type_request_search_form" model="ir.ui.view">
+        <field name="name">contract.type.search.form</field>
+        <field name="model">contract.type</field>
+        <field name="arch" type="xml">
+            <search string="Contract Type">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+    <!-- Shortcuts -->
+    <record id="act_contract_type" model="ir.actions.act_window">
+        <field name="name">Contract Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="contract_type_tree_view"/>
+    </record>
+    <menuitem id="menu_project_dashboard_data_configuration"
+              name="Configuration"
+              parent="menu_project_dashboard_date" sequence="100" groups="group_project_dashboard_doc_submittal_log_manager"/>
+    <menuitem
+            id="menu_act_contract_type"
+            action="act_contract_type"
+            name="Contract Type"
+            sequence="2"
+            parent="menu_project_dashboard_data_configuration"/>
+</odoo>

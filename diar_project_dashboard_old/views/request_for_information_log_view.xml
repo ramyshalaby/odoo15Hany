@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Request For Information Log kanban view-->
+    <record id="request_for_information_log_kanban_view" model="ir.ui.view">
+        <field name="name">request.for.information.log.kanban</field>
+        <field name="model">request.for.information.log</field>
+        <field name="arch" type="xml">
+            <kanban sample="1">
+                <field name="id"/>
+                <field name="project_id"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="project_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="partner_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings mt-1">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="contract_type_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <t t-if="record.project_code.value">[<field name="project_code"/>]
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <div name="project_start_date" class="mt-1">
+                                            From:
+                                            <field name="project_start_date"/>
+                                            TO :
+                                            <field name="project_end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--Request For Information Log Tree view-->
+    <record id="request_for_information_log_tree_view" model="ir.ui.view">
+        <field name="name">request.for.information.log.tree</field>
+        <field name="model">request.for.information.log</field>
+        <field name="arch" type="xml">
+            <tree string="Request For Information Log">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="contract_type_id"/>
+                <field name="project_start_date"/>
+                <field name="project_end_date"/>
+                <field name="project_code"/>
+                <field name="diar_scope"/>
+                <field name="contractor_res_partner_id"/>
+                <field name="consultant_res_partner_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+                <field name="last_update"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Request For Information Log Form view-->
+    <record id="request_for_information_log_form_view" model="ir.ui.view">
+        <field name="name">request.for.information.log.form</field>
+        <field name="model">request.for.information.log</field>
+        <field name="arch" type="xml">
+            <form string="Request For Information Log">
+                <header>
+
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Project Information">
+                            <field name="project_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="partner_id"/>
+                            <field name="contract_type_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+
+                            <label for="project_start_date" string="Dates"
+                                   groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"/>
+                            <div name="dates" class="o_row"
+                                 groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager">
+                                <field name="project_start_date" widget="daterange"
+                                       attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                       placeholder="From ..."
+                                       options="{&quot;related_end_date&quot;: &quot;project_end_date&quot;}"/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"
+                                   title="Arrow"/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon"
+                                   title="Arrow"
+                                   attrs="{'invisible': [('project_start_date', '=', False), ('project_end_date', '=', False)]}"/>
+                                <field name="project_end_date" widget="daterange"
+                                       attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                       placeholder="To ..."
+                                       options="{&quot;related_start_date&quot;: &quot;project_start_date&quot;}"/>
+                            </div>
+                            <field name="project_code" attrs="{'readonly':[('is_top_manager','=',False)]}"/>
+                            <field name="diar_scope" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"/>
+                            <field name="main_contractor_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="contractor_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="main_consultant_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="consultant_res_partner_id" required="1"
+                                   attrs="{'readonly':[('is_top_manager','=',False)]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="create_uid" readonly="1" force_save="1"/>
+                            <field name="create_date" readonly="1" force_save="1"/>
+                            <field name="last_update" readonly="1" force_save="1"/>
+                            <field name="is_top_manager" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="request_for_information_log_details_ids" nolabel="1">
+                                <tree>
+                                    <field name="reference" required="1"/>
+                                    <field name="review" required="1"/>
+                                    <field name="from_res_partner_id" required="1"/>
+                                    <field name="to_res_partner_id" required="1"/>
+                                    <field name="discipline_section_id" required="1"/>
+                                    <field name="location_Level" required="1" optional="hide"/>
+                                    <field name="name" required="1" optional="hide"/>
+                                    <field name="description" required="1" optional="hide"/>
+                                    <field name="copy_type" required="1" optional="hide"/>
+                                    <field name="sentdate" required="1" optional="hide"/>
+                                    <field name="duedate" required="1" optional="hide"/>
+                                    <field name="receiveddate" optional="hide"/>
+                                    <field name="replyduration" required="1" optional="hide"/>
+                                    <field name="action_code" required="1" optional="hide"/>
+                                    <field name="submittedfor" required="1" optional="hide"/>
+                                    <field name="rfi_latest_super" required="1" optional="hide"/>
+                                    <field name="rfiStatus" required="1" optional="hide"/>
+                                    <field name="res_country_id" required="1" optional="hide"/>
+                                    <field name="packageType" required="1" optional="hide"/>
+                                    <field name="scope" required="1" optional="hide"/>
+                                    <field name="notes" optional="hide"/>
+                                </tree>
+                                <form>
+                                    <group col="4">
+                                        <field name="reference" required="1"/>
+                                        <field name="review" required="1"/>
+                                        <field name="from_res_partner_id" required="1"/>
+                                        <field name="to_res_partner_id" required="1"/>
+                                        <field name="discipline_section_id" required="1"/>
+                                        <field name="location_Level" required="1" optional="hide"/>
+                                        <field name="name" required="1"/>
+                                        <field name="description" required="1" />
+                                        <field name="copy_type" required="1"/>
+                                        <field name="action_code"
+                                               groups="diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager"/>
+                                        <label for="sentdate" string="Send to Receive Date"/>
+                                        <div name="sentdate" class="o_row">
+                                            <field name="sentdate" required="1"
+                                                   placeholder="Sent Date ..."
+                                                   options="{&quot;related_end_date&quot;: &quot;receiveddate&quot;}"/>
+                                            <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon"
+                                               title="Arrow"/>
+                                            <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon"
+                                               title="Arrow"
+                                               attrs="{'invisible': [('sentdate', '=', False), ('receiveddate', '=', False)]}"/>
+                                            <field name="receiveddate" readonly="1"
+                                                   placeholder="Receive Date ..." force_save="1"
+                                                   options="{&quot;related_start_date&quot;: &quot;sentdate&quot;}"/>
+                                        </div>
+                                        <field name="duedate" required="1"/>
+                                        <field name="replyduration"/>
+                                        <field name="submittedfor" readonly="1" force_save="1"/>
+                                        <field name="rfi_latest_super" required="1"/>
+                                        <field name="rfiStatus" readonly="1" force_save="1"/>
+                                        <field name="native_file" required="1"/>
+                                        <field name="native_file_name" filename="native_file" invisible="1"/>
+                                        <field name="scan_file"/>
+                                        <field name="scan_file_name" filename="scan_file" invisible="1"/>
+                                        <field name="res_country_id" required="1"/>
+                                        <field name="packageType" required="1"/>
+                                        <field name="scope" required="1"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Totals">
+                            <group>
+                                <group>
+                                    <field name="h_co_action_code"/>
+                                    <field name="a_co_action_code"/>
+                                    <field name="b_co_action_code"/>
+                                    <field name="c_co_action_code"/>
+                                    <field name="d_co_action_code"/>
+                                    <field name="cancel_co_action_code"/>
+                                    <field name="revision_co_action_code"/>
+                                </group>
+                                <group>
+                                    <field name="latest_dos"/>
+                                    <field name="superseded_dos"/>
+                                    <field name="opened_dosStatus"/>
+                                    <field name="closed_dosStatus"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--Request For Information Log search view-->
+    <record id="request_for_information_log_request_search_form" model="ir.ui.view">
+        <field name="name">request.for.information.log.search.form</field>
+        <field name="model">request.for.information.log</field>
+        <field name="arch" type="xml">
+            <search string="Request For Information Log">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="partner_id"/>
+                <field name="project_start_date"/>
+                <field name="project_end_date"/>
+                <field name="project_code"/>
+                <field name="diar_scope"/>
+                <field name="contractor_res_partner_id"/>
+                <field name="consultant_res_partner_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+                <field name="last_update"/>
+            </search>
+        </field>
+    </record>
+    <!-- Shortcuts -->
+    <record id="act_request_for_information_log" model="ir.actions.act_window">
+        <field name="name">Request For Information Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">request.for.information.log</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" eval="request_for_information_log_tree_view"/>
+    </record>
+    <menuitem
+            id="menu_act_request_for_information_log"
+            action="act_request_for_information_log"
+            name="Request For Information Log"
+            sequence="6"
+            parent="menu_project_dashboard_date"/>
+</odoo>

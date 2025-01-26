@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_hr_job_form_update">
+            <field name="name">hr.job.inherit.view</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="SOP Details">
+                        <field name="sop_details" options="{'collaborative': true}" attrs="{'invisible': [('state', '!=', 'recruit')]}"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>

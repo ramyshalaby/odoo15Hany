@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="ir.module.category" id="module_category_project_dashboard_data">
+            <field name="name">Project Dashboard</field>
+            <field name="description">Helps you manage your Project Dashboard Data.</field>
+            <field name="sequence">16</field>
+        </record>
+
+        <record id="group_project_dashboard_doc_submittal_log_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_project_dashboard_data"/>
+            <field name="implied_ids" eval="[(4, ref('hr.group_hr_user'))]"/>
+        </record>
+        <record id="group_project_dashboard_doc_submittal_log_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_project_dashboard_data"/>
+            <field name="implied_ids"
+                   eval="[(4, ref('diar_project_dashboard.group_project_dashboard_doc_submittal_log_user'))]"/>
+        </record>
+        <record id="group_project_dashboard_doc_submittal_log_top_manager" model="res.groups">
+            <field name="name">Top Manager</field>
+            <field name="category_id" ref="module_category_project_dashboard_data"/>
+            <field name="implied_ids"
+                   eval="[(4, ref('diar_project_dashboard.group_project_dashboard_doc_submittal_log_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

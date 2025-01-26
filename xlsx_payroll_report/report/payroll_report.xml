@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <report
+        id="payroll_batch_report"
+        model="hr.payslip.run"
+        string="Payroll Batch Report"
+        report_type="xlsx"
+        name="xlsx_payroll_report.xlsx_payroll_report"
+        file="Payroll Report"
+        attachment_use="False"
+        />
+        <report
+        id="payroll_excel_report"
+        model="hr.payslip"
+        string="Payroll Report"
+        report_type="xlsx"
+        name="xlsx_payroll_report.xlsx_payroll_report"
+        file="Payroll Report"
+        attachment_use="False"
+        />
+
+</odoo>

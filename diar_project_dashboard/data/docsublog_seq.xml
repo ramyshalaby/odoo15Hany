@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate='1'>
+		<record id="ir_seq_document_submittal_log" model="ir.sequence">
+			<field name="name">Document Submittal Log</field>
+			<field name="code">document.submittal.log</field>
+			<field name="prefix">PDL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_document_submittal_sd_log" model="ir.sequence">
+			<field name="name">Document Submittal (SD) Log</field>
+			<field name="code">document.submittal.sd.log</field>
+			<field name="prefix">DSSDL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_inspection_request_log" model="ir.sequence">
+			<field name="name">Inspection Request Log</field>
+			<field name="code">inspection.request.log</field>
+			<field name="prefix">IRL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_material_inspection_request_log" model="ir.sequence">
+			<field name="name">Material Inspection Request Log</field>
+			<field name="code">material.inspection.request.log</field>
+			<field name="prefix">MIRL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_material_submittal_log" model="ir.sequence">
+			<field name="name">Material Submittal Log</field>
+			<field name="code">material.submittal.log</field>
+			<field name="prefix">MSL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_request_for_information_log" model="ir.sequence">
+			<field name="name">Request For Information Log</field>
+			<field name="code">request.for.information.log</field>
+			<field name="prefix">RIFL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+		<record id="ir_seq_non_conformance_report_log" model="ir.sequence">
+			<field name="name">Non Conformance Report Log</field>
+			<field name="code">non.conformance.report.log</field>
+			<field name="prefix">NCRL/</field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+		</record>
+	</data>
+</odoo>

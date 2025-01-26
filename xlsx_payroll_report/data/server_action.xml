@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.server" id="action_hr_payroll_print_xlsx">
+        <field name="name">Print EXCEL</field>
+        <field name="model_id" ref="hr_payroll_community.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll_community.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.print_payslip_elsx()
+        </field>
+    </record>
+
+</odoo>

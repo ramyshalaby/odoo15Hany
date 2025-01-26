@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="view_project_deliverables_form" model="ir.ui.view">
+            <field name="name">view.project.deliverables.form</field>
+            <field name="model">project.deliverables</field>
+            <field name="arch" type="xml">
+                <form string="Project Deliverables Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Deliverable Description"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="discipline_id"/>
+                                <field name="engineering_phase_id"/>
+                            </group>
+                            <group>
+                                <field name="deliverable_type_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Remarks">
+                                <field name="remarks"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_project_deliverables_tree" model="ir.ui.view">
+            <field name="name">view.project.deliverables.tree</field>
+            <field name="model">project.deliverables</field>
+            <field name="arch" type="xml">
+                <tree string="Project Deliverables Tree">
+                    <field name="name"/>
+                    <field name="discipline_id"/>
+                    <field name="engineering_phase_id"/>
+                    <field name="deliverable_type_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_project_deliverables_view" model="ir.actions.act_window">
+            <field name="name">Project Deliverables</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.deliverables</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_project_deliverables_view" name="Project Deliverables" parent="project.menu_project_config"
+                  action="action_project_deliverables_view" sequence="9"/>
+
+        <record id="action_project_engineering_phase_view" model="ir.actions.act_window">
+            <field name="name">Engineering Phase</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.engineering.phase</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Engineering Phase
+              </p><p>
+                Create Project Engineering Phase
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_project_engineering_phase_view" name="Engineering Phases" parent="project.menu_project_config"
+                  action="action_project_engineering_phase_view" sequence="10"/>
+
+        <record id="action_project_deliverables_type_view" model="ir.actions.act_window">
+            <field name="name">Deliverables Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.deliverables.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Project Deliverables Types
+              </p><p>
+                Create Project Deliverables Types
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_project_deliverables_types_view" name="Deliverables Types" parent="project.menu_project_config"
+                  action="action_project_deliverables_type_view" sequence="11"/>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_hr_department_resources_form" model="ir.ui.view">
+            <field name="name">view.inherit.hr.department.resource.value.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+
+                <!-- position values: after|before|replace|attributes|inside -->
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Resources Values">
+                            <field name="resource_value_ids">
+                                <tree editable="bottom">
+                                    <field name="job_id"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="resource_value"/>
+                                    <field name="uom_id" options="{'no_create': True}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_project_estimation_form" model="ir.ui.view">
+            <field name="name">view.project.estimation.form</field>
+            <field name="model">project.estimation</field>
+            <field name="arch" type="xml">
+                <form string="Project Estimation Form">
+                    <header>
+                        <button name="set_progress" string="Set in Progress" class="oe_highlight" states="draft" type="object" groups="sales_team.group_sale_manager"/>
+                        <button name="set_done" string="Set Done" class="oe_highlight" states="progress" type="object" groups="sales_team.group_sale_manager"/>
+                        <button name="set_draft" string="Set to Draft" states="cancel,progress" type="object" groups="sales_team.group_sale_manager"/>
+                        <button name="set_cancel" string="Cancel" states="draft,progress" type="object" groups="sales_team.group_sale_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,progress,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Description" attrs="{'readonly':[('id', '!=', False), ('is_request_creator', '=', False)]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="project_name" attrs="{'readonly':[('id', '!=', False), ('is_request_creator', '=', False)]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('id', '!=', False), ('is_request_creator', '=', False)]}"/>
+                                <field name="department_ids" widget="many2many_tags"/>
+                                <field name="project_type_id"/>
+                                <field name="project_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="created_on" readonly="1"/>
+                                <field name="creator_id" readonly="1"/>
+                                <field name="deadline" attrs="{'readonly':[('id', '!=', False), ('is_request_creator', '=', False)]}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="total_request" groups="sales_team.group_sale_manager"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </group>
+                        <group invisible="1">
+                            <field name="is_request_creator" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Configuration" groups="sales_team.group_sale_manager">
+                                <group>
+                                     <group>
+                                        <field name="is_fire_fighting_pluming"/>
+                                        <field name="is_hvac"/>
+                                        <field name="is_instrumentation"/>
+                                        <field name="is_architect"/>
+                                        <field name="is_civil"/>
+                                        <field name="is_document_controller"/>
+                                        <field name="is_electrical"/>
+                                     </group>
+                                    <group>
+                                        <field name="is_hse"/>
+                                        <field name="is_low_current"/>
+                                        <field name="is_management"/>
+                                        <field name="is_piping"/>
+                                        <field name="is_process"/>
+                                        <field name="is_top_management"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Fire Fighting &amp; Pluming" attrs="{'invisible': ['|', ('is_fire_fighting_pluming', '=', False), '&amp;', ('is_fire_fighting_pluming_department_manager_user_id', '=', False), ('is_request_creator', '=', False),]}">
+                                <group>
+                                    <field name="fire_fighting_pluming_department_id" options="{'no_create': True}" readonly="1"/>
+                                    <field name="fire_fighting_pluming_department_manager_user_id"/>
+                                    <field name="is_fire_fighting_pluming_department_manager_user_id" invisible="1"/>
+                                    <field name="total_fire_fighting_pluming" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="fire_fighting_pluming_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.fire_fighting_pluming_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.fire_fighting_pluming_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Instrumentation" attrs="{'invisible': ['|', ('is_instrumentation', '=', False), '&amp;', ('is_instrumentation_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="instrumentation_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="instrumentation_department_manager_user_id"/>
+                                    <field name="is_instrumentation_department_manager_user_id" invisible="1"/>
+                                    <field name="total_instrumentation_lines" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="instrumentation_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.instrumentation_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.instrumentation_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="HVAC" attrs="{'invisible': ['|', ('is_hvac', '=', False), '&amp;', ('is_hvac_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="hvac_department_id" options="{'no_create': True}" readonly="1"/>
+                                    <field name="hvac_department_manager_user_id"/>
+                                    <field name="is_hvac_department_manager_user_id" invisible="1"/>
+                                    <field name="total_hvac" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="hvac_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.hvac_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.hvac_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Architect" attrs="{'invisible': ['|', ('is_architect', '=', False), '&amp;', ('is_architect_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="architect_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="architect_department_manager_user_id"/>
+                                    <field name="is_architect_department_manager_user_id" invisible="1"/>
+                                    <field name="total_architect" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="architect_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.architect_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.architect_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Civil" attrs="{'invisible': ['|', ('is_civil', '=', False), '&amp;', ('is_civil_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="civil_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="civil_department_manager_user_id"/>
+                                    <field name="is_civil_department_manager_user_id" invisible="1"/>
+                                    <field name="total_civil" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="civil_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.civil_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.civil_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Document Controller" attrs="{'invisible': ['|', ('is_document_controller', '=', False), '&amp;', ('is_document_controller_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field readonly="1" name="document_controller_department_id" options="{'no_create': True}"/>
+                                    <field name="document_controller_department_manager_user_id"/>
+                                    <field name="is_document_controller_department_manager_user_id" invisible="1"/>
+                                    <field name="total_document_controller" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="document_controller_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.document_controller_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.document_controller_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Electrical" attrs="{'invisible': ['|', ('is_electrical', '=', False), '&amp;', ('is_electrical_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="electrical_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="electrical_department_manager_user_id"/>
+                                    <field name="is_electrical_department_manager_user_id" invisible="1"/>
+                                    <field name="total_electrical" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="electrical_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.electrical_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.electrical_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="HSE" attrs="{'invisible': [ '|', ('is_hse', '=', False), '&amp;', ('is_hse_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="hse_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="hse_department_manager_user_id"/>
+                                    <field name="is_hse_department_manager_user_id" invisible="1"/>
+                                    <field name="total_hse" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="hse_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.hse_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.hse_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Low Current" attrs="{'invisible': ['|',  ('is_low_current', '=', False), '&amp;', ('is_low_current_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="low_current_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="low_current_department_manager_user_id"/>
+                                    <field name="is_low_current_department_manager_user_id" invisible="1"/>
+                                    <field name="total_low_current" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="low_current_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.low_current_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.low_current_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Management" attrs="{'invisible': ['|', ('is_management', '=', False), '&amp;', ('is_management_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="management_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="management_department_manager_user_id"/>
+                                    <field name="is_management_department_manager_user_id" invisible="1"/>
+                                    <field name="total_management" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="management_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.management_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.management_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Piping" attrs="{'invisible': ['|', ('is_piping', '=', False), '&amp;', ('is_piping_department_manager_user_id', '=', False),('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="piping_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="piping_department_manager_user_id"/>
+                                    <field name="is_piping_department_manager_user_id" invisible="1"/>
+                                    <field name="total_piping" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="piping_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.piping_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.piping_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Process" attrs="{'invisible': ['|', ('is_process', '=', False), '&amp;', ('is_process_department_manager_user_id', '=', False), ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="process_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="process_department_manager_user_id"/>
+                                    <field name="is_process_department_manager_user_id" invisible="1"/>
+                                    <field name="total_process" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="process_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.process_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.process_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Top Management" attrs="{'invisible': ['|', ('is_top_management', '=', False), '&amp;', ('is_top_management_department_manager_user_id', '=', False),  ('is_request_creator', '=', False)]}">
+                                <group>
+                                    <field name="top_management_department_id" readonly="1" options="{'no_create': True}"/>
+                                    <field name="top_management_department_manager_user_id"/>
+                                    <field name="is_top_management_department_manager_user_id" invisible="1"/>
+                                    <field name="total_top_management" groups="sales_team.group_sale_manager"/>
+                                </group>
+                                <group>
+                                    <field name="top_management_lines_ids" nolabel="1">
+                                        <tree editable="top">
+                                            <field name="resource_id" domain="[('department_id', '=', parent.top_management_department_id)]"/>
+                                            <field name="project_deliverables_id" options="{'no_create': True}"/>
+                                            <field name="employee_id" domain="[('department_id', '=', parent.top_management_department_id)]"/>
+                                            <field name="uom_id"/>
+                                            <field name="qty"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="is_request_creator" invisible="1"/>
+                                            <field name="hourly_rate" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                            <field name="subtotal" attrs="{'invisible': [('is_request_creator', '=', False)]}"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_project_estimation_tree" model="ir.ui.view">
+            <field name="name">view.project.estimation.tree</field>
+            <field name="model">project.estimation</field>
+            <field name="arch" type="xml">
+                <tree string="Project Estimation Tree">
+                    <field name="name"/>
+                    <field name="project_name"/>
+                    <field name="partner_id"/>
+                    <field name="creator_id"/>
+                    <field name="created_on"/>
+                    <field name="deadline"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_project_estimation_view" model="ir.actions.act_window">
+            <field name="name">Project Estimation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.estimation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem id="menu_project_estimation_view" name="Project Estimation" parent="sale.sale_order_menu" action="action_project_estimation_view" sequence="0"/>
+        
+        <record id="view_project_type_form" model="ir.ui.view">
+            <field name="name">view.project.type.form</field>
+            <field name="model">project.type</field>
+            <field name="arch" type="xml">
+                <form string="Project Type Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_project_type_tree" model="ir.ui.view">
+            <field name="name">view.project.type.tree</field>
+            <field name="model">project.type</field>
+            <field name="arch" type="xml">
+                <tree string="Project Type Tree">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_project_type_view" model="ir.actions.act_window">
+            <field name="name">Project Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Project Type
+              </p><p>
+                Create new Project Types 
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_project_type_view" name="Project Type" parent="sale.menu_sale_config" action="action_project_type_view" sequence="15"/>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_project_task_form" model="ir.ui.view">
+            <field name="name">view.inherit.project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//page[@name='sub_tasks_page']//field[@name='child_ids']//tree//field[@name='name']" position="before">
+                    <field name="project_deliverables_id"/>
+                </xpath>
+
+            </field>
+        </record>
+        
+    </data>
+</odoo>

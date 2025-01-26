@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="action_diar_tasks_report_xlsx"
+        string="Taskd cost Report"
+        model="diar.tasks.report"
+        report_type="xlsx"
+        name="diar_tasks_cost_report.report_tasks_cost_xlsx"
+        menu="False"
+        file = "diar_tasks_cost_report.report_tasks_cost_xlsx"
+    />
+    <report
+        id="action_diar_tasks_analysis"
+        string="Tasks Cost Report"
+        model="diar.tasks.report"
+        report_type="qweb-pdf"
+        file="diar_tasks_cost_report.diar_tasks_analysis_view"
+        name="diar_tasks_cost_report.diar_tasks_analysis_view"
+    />
+
+    <template id="diar_tasks_analysis_view">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t class="page">
+                    <div class="oe_structure"/>
+                    <center>
+                        <b>
+                            <h3>Invoice Analysis Report</h3>
+
+                        </b>
+                    </center>
+                    <t t-if="start_date and end_date">
+                        <center>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </center>
+                    </t>
+                    <h5>Operating Units: </h5>
+                    <t t-foreach="units" t-as="u">
+                        <span t-esc="u['name']"/> ,
+                    </t>
+                    <t t-foreach="partner_id" t-as="partner">
+                        <t t-set="p" t-as="1"/>
+<!--                        <center>
+                            <b>
+                                <span t-esc="partner['name']"/>
+                            </b>
+                        </center>
+                        <br/>-->
+                        <t t-set="t_invoiced" t-value="0"/>
+                        <t t-set="t_paid" t-value="0"/>
+                        <t t-set="t_due" t-value="0"/>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Customer Code</th>
+                                    <th>Customer</th>
+                                    <th>Unit</th>
+                                    <th>Invoice Number</th>
+                                    <th>Your Ref.</th>
+                                    <th>Invoice Date</th>
+                                    <th>Amount Invoiced</th>
+                                    <th>Amount Paid</th>
+                                    <th>Amount Due</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+<!--
+                                <tr>
+                                    <t t-if="form[0] and form[0]['partner_id'] == partner['id']">
+                                        <td  style='border-bottom:none;'>
+                                            <span t-esc="partner['name']"/>
+                                        </td>
+                                        <td  style='border-bottom:none;'>
+                                            <span t-esc="partner['name']"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="form[0]['unit']">
+                                                <span t-esc="form[0]['unit']"/>
+                                            </t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['invoice']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['ref']" t-options='{"widget": "date"}'/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['date']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['invoiced']"/>
+                                            <t t-set="t_invoiced" t-value="t_invoiced + form[0]['invoiced']"></t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['paid']"/>
+                                            <t t-set="t_paid" t-value="t_paid + form[0]['paid']"></t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="form[0]['due']"/>
+                                            <t t-set="t_due" t-value="t_due + form[0]['due']"></t>
+                                        </td>
+                                    </t>
+                                </tr>
+-->
+                                <tr t-foreach="form" t-as="order">
+                                    <t t-if="order['partner_id'] == partner['id']">
+                                        <t t-if="p=='1' or 1">
+                                            <td  style='border-bottom:none;'>
+                                                <span t-esc="partner['name']"/>
+                                            </td>
+                                            <td  style='border-bottom:none;'>
+                                                <span t-esc="partner['name']"/>
+                                            </td>
+                                            <t t-set="p" t-as="0"/>
+                                        </t>
+                                        <t t-else="">
+                                            <td  style='border-bottom:none;'/>
+                                            <td  style='border-bottom:none;'/>
+                                        </t>
+
+                                        <td>
+                                            <t t-if="order['unit']">
+                                                <span t-esc="order['unit']"/>
+                                            </t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['invoice']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['ref']" t-options='{"widget": "date"}'/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['date']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['invoiced']"/>
+                                            <t t-set="t_invoiced" t-value="t_invoiced + order['invoiced']"></t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['paid']"/>
+                                            <t t-set="t_paid" t-value="t_paid + order['paid']"></t>
+
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['due']"/>
+                                            <t t-set="t_due" t-value="t_due + order['due']"></t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+
+                                    <t t-if="p=='1' or 1">
+                                        <td  style='border-bottom:none;'>
+                                            <span t-esc="partner['name']"/>
+                                        </td>
+                                        <td  style='border-bottom:none;'>
+                                            <span t-esc="partner['name']"/>
+                                        </td>
+                                        <t t-set="p" t-as="0"/>
+                                    </t>
+                                    <t t-else="">
+                                        <td/>
+                                        <td style='border-left:none;'/>
+                                    </t>
+                                    <td style='border-left:none;'/>
+                                    <td style='border-left:none;'/>
+                                    <td style='border-left:none;'/>
+                                    <td>
+                                        <strong>Totals</strong>
+                                    </td>
+                                    <td>
+<!--                                        <span>Total invoiced</span>-->
+                                        <t t-esc="t_invoiced"/>
+                                    </td>
+                                    <td>
+<!--                                        <span>Total paid:</span>-->
+                                        <t t-esc="t_paid"/>
+                                    </td>
+                                    <td>
+<!--                                        <span>Total due:</span>-->
+                                        <t t-esc="t_due"/>
+                                    </td>
+                                </tr>
+<!--
+                                <tr>
+                                    <td colspan="100%">مبروووووووووووووووووووووووووووووووك</td>
+                                </tr>
+-->
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
